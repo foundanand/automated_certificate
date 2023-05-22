@@ -1,12 +1,13 @@
 from PyPDF2 import PdfWriter, PdfReader
 import io
+import pandas as pd
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A3, A4
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 
 NAME_FONT = pdfmetrics.registerFont(TTFont('Roca-Two', 'Roca-Two-Bold.ttf'))
-
+FILEPATH = ""
 
 def make_certificate(PER_NAME):
     packet = io.BytesIO()
@@ -32,3 +33,16 @@ def make_certificate(PER_NAME):
     output.write(output_stream)
     output_stream.close()
 
+
+
+df = pd.read_excel(FILEPATH)
+name_list = df.to_dict(orient='records')
+
+for names in name_list:
+    pdfGen = {'name': names['name']}
+
+
+    PER_NAME = pdfGen['name']
+
+    make_certificate(PER_NAME)
+    print(PER_NAME)
